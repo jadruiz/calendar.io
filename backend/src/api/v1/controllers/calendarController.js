@@ -104,3 +104,54 @@ exports.addEventToCalendar = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+exports.getEventsForCalendar = async (req, res) => {
+  try {
+    const { calendarId } = req.params;
+    const calendar = await Calendar.findById(calendarId);
+    if (!calendar) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Calendario no encontrado" });
+    }
+    const events = await Event.find({ calendarId: calendar._id });
+    res.status(200).json({ success: true, data: events });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.removeEventFromCalendar = async (req, res) => {
+  try {
+    const { calendarId, eventId } = req.params;
+    await Event.findByIdAndDelete(eventId);
+    await Calendar.findByIdAndUpdate(calendarId, {
+      $pull: { eventsIds: eventId },
+    });
+    res
+      .status(200)
+      .json({ success: true, message: "Evento eliminado del calendario" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.updateEventInCalendar = async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    const { title, description, start, end } = req.body;
+    const updatedEvent = await Event.findByIdAndUpdate(
+      eventId,
+      { title, description, start, end },
+      { new: true }
+    );
+    if (!updatedEvent) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Evento no encontrado" });
+    }
+    res.status(200).json({ success: true, data: updatedEvent });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
