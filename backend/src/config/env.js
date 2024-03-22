@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const validateEnv = () => {
-  const requireEnv = ["HOST", "PORT", "NODE_ENV", "MONGO_URI", "SECRET_KEY"];
+  const requireEnv = ["PORT", "NODE_ENV", "MONGO_URI", "SECRET_KEY"];
   const missingEnv = requireEnv.filter((envVar) => {
     !process.env[envVar];
   });
@@ -16,9 +16,8 @@ const validateEnv = () => {
 validateEnv();
 
 module.exports = {
-  HOST: process.env.HOST,
-  MONGO_URI: process.env.MONGO_URI,
   PORT: process.env.PORT,
   NODE_ENV: process.env.NODE_ENV,
+  MONGO_URI: process.env.MONGO_URI,
   SECRET_KEY: process.env.SECRET_KEY,
 };

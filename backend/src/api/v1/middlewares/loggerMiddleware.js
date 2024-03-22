@@ -8,7 +8,7 @@ const loggerMiddleware = (req, res, next) => {
       `${req.method} ${req.originalUrl} ${res.statusCode} ${responseTime}ms`
     );
   });
-  next;
+  next();
 };
 
 module.exports = loggerMiddleware;

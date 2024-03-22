@@ -6,7 +6,7 @@ const helmet = require("helmet");
 const loggerMiddleware = require("./src/api/v1/middlewares/loggerMiddleware");
 const errorHandler = require("./src/api/v1/middlewares/errorMiddleware");
 // Import Routes
-//const authRoutes = require("./src/api/v1/routes/authRoutes");
+const authRoutes = require("./src/api/v1/routes/authRoutes");
 //const calendarRoutes = require("./src/api/v1/routes/calendarRoutes");
 //const userRoutes = require("./src/api/v1/routes/userRoutes");
 
@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(loggerMiddleware);
 
 // Routes
-//app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/auth", authRoutes);
 //app.use("/api/v1/calendars", calendarRoutes);
 //app.use("/api/v1/users", userRoutes);
 

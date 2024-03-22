@@ -5,10 +5,10 @@ const { PORT, HOST } = require("./src/config/env");
 
 const startServer = async () => {
   try {
-    await connectDB();
-    app.listen(PORT, () => {
-      console.log(`Server running at ${HOST}:${PORT}`);
+    app.listen(PORT || 3000, () => {
+      console.log(`Server running at Port: ${PORT || 3000}`);
     });
+    await connectDB();
   } catch (error) {
     console.error("Error starting the server: ", error);
   }
