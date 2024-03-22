@@ -6,7 +6,7 @@ const eventSchema = new mongoose.Schema(
     description: String,
     start: { type: Date, required: true },
     end: { type: Date, required: true },
-    calendar: {
+    calendarId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Calendar",
       required: true,
