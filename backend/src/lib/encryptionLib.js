@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const bcrypt = require("bcrypt");
 const { SECRET_KEY } = require("../config/env");
 
 const ALGORITHM = "aes-256-cbc";

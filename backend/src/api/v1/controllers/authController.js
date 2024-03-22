@@ -7,10 +7,12 @@ const {
 
 exports.register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, firstname, lastname } = req.body;
     if (
       !isValidEmail(email) ||
       !isNotEmpty(username) ||
+      !isNotEmpty(firstname) ||
+      !isNotEmpty(lastname) ||
       !isValidLength(password, { min: 8 })
     ) {
       return res.status(400).json({
@@ -27,10 +29,16 @@ exports.register = async (req, res) => {
       });
     }
 
-    const user = await User.create({ username, email, password });
+    const user = await User.create({
+      username,
+      email,
+      password,
+      firstname,
+      lastname,
+    });
     res.status(201).json({
       success: true,
-      message: "El usuario ya existe.",
+      message: "El usuario se agregó correctamente.",
       data: { userId: user.id },
     });
   } catch (error) {
