@@ -8,7 +8,7 @@ const errorHandler = require("./src/api/v1/middlewares/errorMiddleware");
 // Import Routes
 const authRoutes = require("./src/api/v1/routes/authRoutes");
 //const calendarRoutes = require("./src/api/v1/routes/calendarRoutes");
-//const userRoutes = require("./src/api/v1/routes/userRoutes");
+const userRoutes = require("./src/api/v1/routes/userRoutes");
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.use(loggerMiddleware);
 // Routes
 app.use("/api/v1/auth", authRoutes);
 //app.use("/api/v1/calendars", calendarRoutes);
-//app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/users", userRoutes);
 
 app.use(errorHandler);
 

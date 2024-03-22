@@ -4,7 +4,8 @@ const {
   isNotEmpty,
   isValidLength,
 } = require("../utils/validator");
-const { NODE_ENV } = require("../../../config/env");
+const { NODE_ENV, SECRET_KEY } = require("../../../config/env");
+const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
   try {
@@ -70,10 +71,14 @@ exports.login = async (req, res) => {
         message: "Credenciales inválidas.",
       });
     }
+    //Generate the  JWT
+    const token = jwt.sign({ userId: user.id }, SECRET_KEY, {
+      expiresIn: "1h",
+    });
     res.status(200).json({
       success: true,
       message: "Inicio de sesión exitoso.",
-      data: { userId: user.id },
+      data: { token: token },
     });
   } catch (error) {
     res.status(500).json({
