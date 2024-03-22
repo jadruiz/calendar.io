@@ -4,6 +4,7 @@ const {
   isNotEmpty,
   isValidLength,
 } = require("../utils/validator");
+const { NODE_ENV } = require("../../../config/env");
 
 exports.register = async (req, res) => {
   try {
@@ -45,7 +46,40 @@ exports.register = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error al registrar el usuario.",
-      error: error.message, // change on production
+      error: NODE_ENV === "production" ? undefined : error.message,
+    });
+  }
+};
+
+exports.login = async (req, res) => {
+  try {
+    const { login, password } = req.body;
+    if (!isNotEmpty(login) || !isNotEmpty(password)) {
+      return res.status(400).json({
+        success: false,
+        message: "El nombre de usuario/email y la contraseña son requeridos.",
+      });
+    }
+
+    const user = await User.findOne({
+      $or: [{ email: login }, { username: login }],
+    });
+    if (!user || !(await user.comparePassword(password))) {
+      return res.status(401).json({
+        success: false,
+        message: "Credenciales inválidas.",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Inicio de sesión exitoso.",
+      data: { userId: user.id },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error al iniciar sesión.",
+      error: error.message,
     });
   }
 };
