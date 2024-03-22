@@ -5,6 +5,7 @@ const helmet = require("helmet");
 // Import Middlewares
 const loggerMiddleware = require("./src/api/v1/middlewares/loggerMiddleware");
 const errorHandler = require("./src/api/v1/middlewares/errorMiddleware");
+const authMiddleware = require("./src/api/v1/middlewares/authMiddleware");
 // Import Routes
 const authRoutes = require("./src/api/v1/routes/authRoutes");
 //const calendarRoutes = require("./src/api/v1/routes/calendarRoutes");
@@ -21,7 +22,7 @@ app.use(loggerMiddleware);
 // Routes
 app.use("/api/v1/auth", authRoutes);
 //app.use("/api/v1/calendars", calendarRoutes);
-app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/users", authMiddleware, userRoutes);
 
 app.use(errorHandler);
 
